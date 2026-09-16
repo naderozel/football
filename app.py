@@ -169,25 +169,7 @@ with st.sidebar:
         "Your personal chatbot for learning and talking about football."
     )
 
-    #st.divider()
-
-    #st.subheader("📚 Topics")
-
-    # #topics = [
-    #     "⚽ Rules",
-    #     "🏆 Competitions",
-    #     "👤 Players",
-    #     "🏟️ Clubs",
-    #     "📋 Tactics",
-    #     "🎯 Skills",
-    #     "🌍 World Cup",
-    #     "💰 Transfers",
-    #     "📊 Statistics",
-    #     "🧤 Goalkeeping"
-    # ]
-
-    # for topic in topics:
-    #     st.write(topic)
+    
 
     st.divider()
 
@@ -272,7 +254,7 @@ if len(st.session_state.messages) == 1:
 
     with col1:
         st.markdown("""
-        <div class="category-card">
+        <div class="category-card" style="color:black;">
         <h3>🏆 Competitions</h3>
         <p>
         Learn about the World Cup, Champions League,
@@ -283,7 +265,7 @@ if len(st.session_state.messages) == 1:
 
     with col2:
         st.markdown("""
-        <div class="category-card">
+        <div class="category-card" style="color:black;">
         <h3>📋 Tactics</h3>
         <p>
         Learn about formations, pressing, possession,
@@ -294,7 +276,7 @@ if len(st.session_state.messages) == 1:
 
     with col3:
         st.markdown("""
-        <div class="category-card">
+        <div class="category-card" style="color:black;">
         <h3>👤 Players</h3>
         <p>
         Ask about football positions, player roles,
