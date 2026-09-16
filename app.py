@@ -1,142 +1,245 @@
 import streamlit as st
-from openai import OpenAI
+from groq import Groq
 
 # ============================================================
-# PAGE CONFIGURATION
+# PAGE
 # ============================================================
 
 st.set_page_config(
-    page_title="Football AI Chatbot",
+    page_title="Football AI",
     page_icon="⚽",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ============================================================
-# CUSTOM CSS
+# ULTRA COMPACT CSS
 # ============================================================
 
 st.markdown("""
 <style>
 
-    .main {
-        background-color: #f7f9fc;
+    /* ---------- GLOBAL ---------- */
+
+    .block-container {
+        padding: 0.25rem 1rem 0.25rem 1rem !important;
+        max-width: 1400px !important;
     }
+
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.1rem !important;
+    }
+
+    /* ---------- HEADER ---------- */
 
     .football-title {
         text-align: center;
-        font-size: 48px;
+        font-size: 30px;
         font-weight: 800;
         color: #0b5d1e;
-        margin-bottom: 5px;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1;
     }
 
     .football-subtitle {
         text-align: center;
-        font-size: 20px;
-        color: #555;
-        margin-bottom: 30px;
+        font-size: 13px;
+        color: #666;
+        margin: 2px 0 4px 0 !important;
+        padding: 0 !important;
+        line-height: 1;
     }
+
+    /* ---------- CARDS ---------- */
 
     .category-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        border: 1px solid #e5e5e5;
-        margin-bottom: 15px;
+        background: white;
+        padding: 6px 9px !important;
+        margin: 0 !important;
+        border-radius: 7px;
+        border: 1px solid #ddd;
+        line-height: 1.1;
     }
 
-    .category-card:hover {
-        border-color: #0b5d1e;
+    .category-card h3 {
+        font-size: 15px;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.1;
+    }
+
+    .category-card p {
+        font-size: 11px;
+        margin: 2px 0 0 0 !important;
+        padding: 0 !important;
+        line-height: 1.15;
+    }
+
+    /* ---------- ALERT ---------- */
+
+    div[data-testid="stAlert"] {
+        padding: 4px 8px !important;
+        margin: 2px 0 !important;
+        min-height: 0 !important;
+    }
+
+    /* ---------- CHAT ---------- */
+
+    div[data-testid="stChatMessage"] {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    div[data-testid="stChatMessageContent"] {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* ---------- CHAT INPUT ---------- */
+
+    div[data-testid="stChatInput"] {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* ---------- BUTTONS ---------- */
+
+    .stButton {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .stButton > button {
-        width: 100%;
-        border-radius: 10px;
-        font-weight: 600;
+        min-height: 25px !important;
+        height: 25px !important;
+        padding: 0 5px !important;
+        margin: 0 !important;
+        border-radius: 5px;
+        font-size: 11px;
+        line-height: 1;
+    }
+
+    /* ---------- SIDEBAR ---------- */
+
+    section[data-testid="stSidebar"] {
+        width: 240px !important;
+    }
+
+    section[data-testid="stSidebar"] .block-container {
+        padding: 0.25rem 0.5rem !important;
+    }
+
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 {
+        margin: 1px 0 !important;
+        padding: 0 !important;
+        line-height: 1.1;
+    }
+
+    section[data-testid="stSidebar"] p {
+        margin: 1px 0 !important;
+        padding: 0 !important;
+        line-height: 1.1;
+        font-size: 12px;
+    }
+
+    section[data-testid="stSidebar"] hr {
+        margin: 3px 0 !important;
+    }
+
+    section[data-testid="stSidebar"] .stCaption {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* ---------- METRIC ---------- */
+
+    div[data-testid="stMetric"] {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    div[data-testid="stMetricLabel"] {
+        font-size: 10px !important;
+    }
+
+    div[data-testid="stMetricValue"] {
+        font-size: 18px !important;
+        line-height: 1 !important;
     }
 
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# OPENAI CLIENT
+# GROQ
 # ============================================================
 
 try:
-    client = OpenAI(
-        api_key=st.secrets["OPENAI_API_KEY"]
+    client = Groq(
+        api_key=st.secrets["GROQ_API_KEY"]
     )
 except Exception:
     client = None
 
 # ============================================================
-# FOOTBALL SYSTEM PROMPT
+# SYSTEM PROMPT
 # ============================================================
 
 SYSTEM_PROMPT = """
 You are Football AI, a friendly and knowledgeable football chatbot.
 
-Your job is to talk primarily about association football (soccer).
+Talk primarily about association football (soccer).
 
 You can discuss:
+- Rules
+- Tactics
+- Formations
+- Clubs
+- National teams
+- Players
+- Managers
+- Football history
+- Competitions
+- Domestic leagues
+- Champions League
+- Europa League
+- World Cup
+- Women's football
+- Youth football
+- Transfers
+- Statistics
+- Famous matches
+- Football terminology
+- Training
+- Positions
+- Goalkeeping
+- Defending
+- Midfield
+- Attacking
+- Set pieces
+- Penalties
+- Offside
+- VAR
+- Football culture
 
-1. Football rules
-2. Football tactics
-3. Football formations
-4. Clubs
-5. National teams
-6. Players
-7. Managers and coaches
-8. Football history
-9. Major competitions
-10. Domestic leagues
-11. Champions League
-12. Europa League
-13. World Cup
-14. Women's football
-15. Youth football
-16. Football transfers
-17. Player statistics
-18. Team statistics
-19. Famous matches
-20. Football terminology
-21. Training and skills
-22. Positions on the pitch
-23. Goalkeeping
-24. Defending
-25. Midfield
-26. Attacking
-27. Set pieces
-28. Penalties
-29. Offside
-30. VAR
-31. Football culture
+Keep answers clear and useful.
 
-You should explain football topics clearly.
+Use short sections and bullet points when appropriate.
 
-When appropriate, use:
-- Short sections
-- Bullet points
-- Examples
-- Tables
-- Tactical explanations
+If the question is unrelated to football, politely say
+that you are a football-focused chatbot.
 
-If the user asks about something unrelated to football,
-politely explain that you are a football-focused chatbot and
-ask them to ask a football-related question.
+Do not claim to have live information.
 
-Do not pretend that you have live information unless it is
-actually provided to you.
+For current scores, fixtures, standings, transfers,
+injuries, or other changing information, tell the user
+that current information needs to be checked from a
+reliable live source.
 
-If the user asks for current scores, fixtures, standings,
-transfers, or other information that changes frequently,
-tell them that current data should be checked from a reliable
-live source.
-
-Be friendly, enthusiastic, and informative.
-
-You may use football emojis such as ⚽ 🥅 🏆 🔥.
+Be friendly and enthusiastic.
 """
 
 # ============================================================
@@ -154,6 +257,9 @@ if "messages" not in st.session_state:
 if "total_questions" not in st.session_state:
     st.session_state.total_questions = 0
 
+if "pending_question" not in st.session_state:
+    st.session_state.pending_question = None
+
 # ============================================================
 # SIDEBAR
 # ============================================================
@@ -162,9 +268,7 @@ with st.sidebar:
 
     st.header("⚽ Football AI")
 
-    st.write(
-        "Your personal chatbot for learning and talking about football."
-    )
+    st.caption("Football chatbot")
 
     st.divider()
 
@@ -188,34 +292,37 @@ with st.sidebar:
 
     st.divider()
 
-    st.subheader("💬 Example Questions")
+    st.subheader("💬 Examples")
 
-    example_questions = [
-        "What is the offside rule?",
-        "Explain the 4-3-3 formation.",
-        "What does a defensive midfielder do?",
+    examples = [
+        "What is offside?",
+        "Explain 4-3-3.",
+        "What does a DM do?",
         "How does VAR work?",
-        "What are the main football positions?",
-        "Explain the Champions League.",
+        "Football positions?",
+        "Explain Champions League.",
         "What makes a good striker?",
         "What is a false nine?"
     ]
 
-    for question in example_questions:
+    for i, question in enumerate(examples):
+
         if st.button(
             question,
-            key=f"example_{question}"
+            key=f"example_{i}"
         ):
             st.session_state.pending_question = question
+            st.rerun()
 
     st.divider()
 
     st.metric(
-        "Questions Asked",
+        "Questions",
         st.session_state.total_questions
     )
 
-    if st.button("🗑️ Clear Chat"):
+    if st.button("🗑️ Clear"):
+
         st.session_state.messages = [
             {
                 "role": "system",
@@ -224,51 +331,48 @@ with st.sidebar:
         ]
 
         st.session_state.total_questions = 0
+        st.session_state.pending_question = None
 
         st.rerun()
 
-    st.divider()
-
-    st.caption("⚽ Football AI • Built with Streamlit")
+    st.caption("⚽ Streamlit + Groq")
 
 # ============================================================
-# MAIN HEADER
+# HEADER
 # ============================================================
 
 st.markdown(
-    '<div class="football-title">⚽ Football AI Chatbot</div>',
+    '<div class="football-title">⚽ Football AI</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
     '<div class="football-subtitle">'
-    'Ask questions about football, tactics, players, clubs, '
-    'competitions and more.'
+    'Football questions • Tactics • Players • Clubs • Competitions'
     '</div>',
     unsafe_allow_html=True
 )
 
 # ============================================================
-# WELCOME SECTION
+# WELCOME
 # ============================================================
 
 if len(st.session_state.messages) == 1:
 
     st.info(
-        "👋 Welcome! I am Football AI. "
-        "Ask me anything about football."
+        "👋 Ask me anything about football!"
     )
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(
+        3,
+        gap="small"
+    )
 
     with col1:
         st.markdown("""
         <div class="category-card">
         <h3>🏆 Competitions</h3>
-        <p>
-        Learn about the World Cup, Champions League,
-        domestic leagues and international tournaments.
-        </p>
+        <p>World Cup • Champions League • Leagues</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -276,10 +380,7 @@ if len(st.session_state.messages) == 1:
         st.markdown("""
         <div class="category-card">
         <h3>📋 Tactics</h3>
-        <p>
-        Learn about formations, pressing, possession,
-        counter-attacks and defensive systems.
-        </p>
+        <p>Formations • Pressing • Possession</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -287,15 +388,12 @@ if len(st.session_state.messages) == 1:
         st.markdown("""
         <div class="category-card">
         <h3>👤 Players</h3>
-        <p>
-        Ask about football positions, player roles,
-        skills and famous footballers.
-        </p>
+        <p>Positions • Roles • Skills</p>
         </div>
         """, unsafe_allow_html=True)
 
 # ============================================================
-# DISPLAY CHAT HISTORY
+# CHAT HISTORY
 # ============================================================
 
 for message in st.session_state.messages:
@@ -303,24 +401,20 @@ for message in st.session_state.messages:
     if message["role"] == "system":
         continue
 
-    with st.chat_message(
-        message["role"]
-    ):
-        st.markdown(
-            message["content"]
-        )
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
 # ============================================================
-# HANDLE SIDEBAR QUESTION
+# SIDEBAR QUESTION
 # ============================================================
 
-pending_question = st.session_state.pop(
-    "pending_question",
-    None
-)
+pending_question = st.session_state.pending_question
+
+if pending_question:
+    st.session_state.pending_question = None
 
 # ============================================================
-# CHAT INPUT
+# INPUT
 # ============================================================
 
 prompt = st.chat_input(
@@ -331,12 +425,11 @@ if pending_question:
     prompt = pending_question
 
 # ============================================================
-# PROCESS USER QUESTION
+# RESPONSE
 # ============================================================
 
 if prompt:
 
-    # Add user message
     st.session_state.messages.append(
         {
             "role": "user",
@@ -346,29 +439,43 @@ if prompt:
 
     st.session_state.total_questions += 1
 
-    # Display user message
     with st.chat_message("user"):
         st.markdown(prompt)
-
-    # ========================================================
-    # GENERATE AI RESPONSE
-    # ========================================================
 
     with st.chat_message("assistant"):
 
         if client is None:
 
-            answer = """
-### ⚠️ API Key Missing
+            st.error(
+                "⚠️ Groq API key is missing. "
+                "Add GROQ_API_KEY to "
+                ".streamlit/secrets.toml."
+            )
 
-The chatbot is ready, but an OpenAI API key has not been
-configured.
+        else:
 
-Create:
+            try:
 
-`.streamlit/secrets.toml`
+                response = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=st.session_state.messages,
+                    temperature=0.7,
+                    max_tokens=2048
+                )
 
-and add:
+                answer = response.choices[0].message.content
 
-```toml
-OPENAI_API_KEY = "your-api-key-here"
+                st.markdown(answer)
+
+                st.session_state.messages.append(
+                    {
+                        "role": "assistant",
+                        "content": answer
+                    }
+                )
+
+            except Exception as e:
+
+                st.error(
+                    f"❌ Error: {str(e)}"
+                )
