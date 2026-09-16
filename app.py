@@ -2,7 +2,7 @@ import streamlit as st
 from groq import Groq
 
 # ============================================================
-# PAGE
+# PAGE CONFIG
 # ============================================================
 
 st.set_page_config(
@@ -13,168 +13,129 @@ st.set_page_config(
 )
 
 # ============================================================
-# ULTRA COMPACT CSS
+# COMPACT CSS
 # ============================================================
 
 st.markdown("""
 <style>
 
-    /* ---------- GLOBAL ---------- */
+.block-container {
+    padding: 0.25rem 1rem !important;
+    max-width: 1400px !important;
+}
 
-    .block-container {
-        padding: 0.25rem 1rem 0.25rem 1rem !important;
-        max-width: 1400px !important;
-    }
+div[data-testid="stVerticalBlock"] {
+    gap: 0.1rem !important;
+}
 
-    div[data-testid="stVerticalBlock"] {
-        gap: 0.1rem !important;
-    }
+.football-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+    color: #0b5d1e;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+}
 
-    /* ---------- HEADER ---------- */
+.football-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    margin: 2px 0 4px 0 !important;
+    padding: 0 !important;
+}
 
-    .football-title {
-        text-align: center;
-        font-size: 30px;
-        font-weight: 800;
-        color: #0b5d1e;
-        margin: 0 !important;
-        padding: 0 !important;
-        line-height: 1;
-    }
+.category-card {
+    background: white;
+    padding: 6px 9px !important;
+    margin: 0 !important;
+    border-radius: 7px;
+    border: 1px solid #ddd;
+    line-height: 1.1;
+}
 
-    .football-subtitle {
-        text-align: center;
-        font-size: 13px;
-        color: #666;
-        margin: 2px 0 4px 0 !important;
-        padding: 0 !important;
-        line-height: 1;
-    }
+.category-card h3 {
+    font-size: 15px;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
-    /* ---------- CARDS ---------- */
+.category-card p {
+    font-size: 11px;
+    margin: 2px 0 0 0 !important;
+    padding: 0 !important;
+    line-height: 1.15;
+}
 
-    .category-card {
-        background: white;
-        padding: 6px 9px !important;
-        margin: 0 !important;
-        border-radius: 7px;
-        border: 1px solid #ddd;
-        line-height: 1.1;
-    }
+div[data-testid="stAlert"] {
+    padding: 4px 8px !important;
+    margin: 2px 0 !important;
+}
 
-    .category-card h3 {
-        font-size: 15px;
-        margin: 0 !important;
-        padding: 0 !important;
-        line-height: 1.1;
-    }
+div[data-testid="stChatMessage"] {
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
-    .category-card p {
-        font-size: 11px;
-        margin: 2px 0 0 0 !important;
-        padding: 0 !important;
-        line-height: 1.15;
-    }
+div[data-testid="stChatMessageContent"] {
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
-    /* ---------- ALERT ---------- */
+.stButton {
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
-    div[data-testid="stAlert"] {
-        padding: 4px 8px !important;
-        margin: 2px 0 !important;
-        min-height: 0 !important;
-    }
+.stButton > button {
+    min-height: 25px !important;
+    height: 25px !important;
+    padding: 0 5px !important;
+    margin: 0 !important;
+    border-radius: 5px;
+    font-size: 11px;
+}
 
-    /* ---------- CHAT ---------- */
+section[data-testid="stSidebar"] .block-container {
+    padding: 0.25rem 0.5rem !important;
+}
 
-    div[data-testid="stChatMessage"] {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    margin: 1px 0 !important;
+    padding: 0 !important;
+}
 
-    div[data-testid="stChatMessageContent"] {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
+section[data-testid="stSidebar"] p {
+    margin: 1px 0 !important;
+    padding: 0 !important;
+    font-size: 12px;
+}
 
-    /* ---------- CHAT INPUT ---------- */
+section[data-testid="stSidebar"] hr {
+    margin: 3px 0 !important;
+}
 
-    div[data-testid="stChatInput"] {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+div[data-testid="stMetric"] {
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
-    /* ---------- BUTTONS ---------- */
+div[data-testid="stMetricLabel"] {
+    font-size: 10px !important;
+}
 
-    .stButton {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .stButton > button {
-        min-height: 25px !important;
-        height: 25px !important;
-        padding: 0 5px !important;
-        margin: 0 !important;
-        border-radius: 5px;
-        font-size: 11px;
-        line-height: 1;
-    }
-
-    /* ---------- SIDEBAR ---------- */
-
-    section[data-testid="stSidebar"] {
-        width: 240px !important;
-    }
-
-    section[data-testid="stSidebar"] .block-container {
-        padding: 0.25rem 0.5rem !important;
-    }
-
-    section[data-testid="stSidebar"] h1,
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3 {
-        margin: 1px 0 !important;
-        padding: 0 !important;
-        line-height: 1.1;
-    }
-
-    section[data-testid="stSidebar"] p {
-        margin: 1px 0 !important;
-        padding: 0 !important;
-        line-height: 1.1;
-        font-size: 12px;
-    }
-
-    section[data-testid="stSidebar"] hr {
-        margin: 3px 0 !important;
-    }
-
-    section[data-testid="stSidebar"] .stCaption {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* ---------- METRIC ---------- */
-
-    div[data-testid="stMetric"] {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    div[data-testid="stMetricLabel"] {
-        font-size: 10px !important;
-    }
-
-    div[data-testid="stMetricValue"] {
-        font-size: 18px !important;
-        line-height: 1 !important;
-    }
+div[data-testid="stMetricValue"] {
+    font-size: 18px !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# GROQ
+# GROQ CLIENT
 # ============================================================
 
 try:
@@ -185,16 +146,72 @@ except Exception:
     client = None
 
 # ============================================================
+# FIND AVAILABLE GROQ MODEL
+# ============================================================
+
+def get_available_model(client):
+
+    # Preferred models, in order
+    preferred_models = [
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b"
+    ]
+
+    try:
+        available_models = client.models.list()
+
+        model_ids = [
+            model.id
+            for model in available_models.data
+        ]
+
+        # First try preferred models
+        for model in preferred_models:
+            if model in model_ids:
+                return model
+
+        # Otherwise find a usable chat model
+        for model_id in model_ids:
+
+            model_name = model_id.lower()
+
+            if (
+                "llama" in model_name
+                or "gpt" in model_name
+                or "qwen" in model_name
+                or "mixtral" in model_name
+            ):
+                return model_id
+
+        return None
+
+    except Exception:
+        return None
+
+
+if client is not None:
+
+    if "groq_model" not in st.session_state:
+
+        st.session_state.groq_model = get_available_model(
+            client
+        )
+
+# ============================================================
 # SYSTEM PROMPT
 # ============================================================
 
 SYSTEM_PROMPT = """
-You are Football AI, a friendly and knowledgeable football chatbot.
+You are Football AI, a friendly and knowledgeable football
+chatbot.
 
 Talk primarily about association football (soccer).
 
 You can discuss:
-- Rules
+
+- Football rules
 - Tactics
 - Formations
 - Clubs
@@ -229,15 +246,14 @@ Keep answers clear and useful.
 
 Use short sections and bullet points when appropriate.
 
-If the question is unrelated to football, politely say
+If the question is unrelated to football, politely explain
 that you are a football-focused chatbot.
 
 Do not claim to have live information.
 
-For current scores, fixtures, standings, transfers,
-injuries, or other changing information, tell the user
-that current information needs to be checked from a
-reliable live source.
+For current scores, fixtures, standings, transfers, injuries,
+or other changing information, explain that current information
+needs to be checked using a reliable live source.
 
 Be friendly and enthusiastic.
 """
@@ -247,6 +263,7 @@ Be friendly and enthusiastic.
 # ============================================================
 
 if "messages" not in st.session_state:
+
     st.session_state.messages = [
         {
             "role": "system",
@@ -311,6 +328,7 @@ with st.sidebar:
             question,
             key=f"example_{i}"
         ):
+
             st.session_state.pending_question = question
             st.rerun()
 
@@ -334,6 +352,22 @@ with st.sidebar:
         st.session_state.pending_question = None
 
         st.rerun()
+
+    st.divider()
+
+    if client is not None:
+
+        if st.session_state.get("groq_model"):
+
+            st.caption(
+                f"🤖 {st.session_state.groq_model}"
+            )
+
+        else:
+
+            st.caption(
+                "⚠️ No compatible Groq model found"
+            )
 
     st.caption("⚽ Streamlit + Groq")
 
@@ -369,6 +403,7 @@ if len(st.session_state.messages) == 1:
     )
 
     with col1:
+
         st.markdown("""
         <div class="category-card">
         <h3>🏆 Competitions</h3>
@@ -377,6 +412,7 @@ if len(st.session_state.messages) == 1:
         """, unsafe_allow_html=True)
 
     with col2:
+
         st.markdown("""
         <div class="category-card">
         <h3>📋 Tactics</h3>
@@ -385,6 +421,7 @@ if len(st.session_state.messages) == 1:
         """, unsafe_allow_html=True)
 
     with col3:
+
         st.markdown("""
         <div class="category-card">
         <h3>👤 Players</h3>
@@ -402,7 +439,10 @@ for message in st.session_state.messages:
         continue
 
     with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+
+        st.markdown(
+            message["content"]
+        )
 
 # ============================================================
 # SIDEBAR QUESTION
@@ -414,7 +454,7 @@ if pending_question:
     st.session_state.pending_question = None
 
 # ============================================================
-# INPUT
+# CHAT INPUT
 # ============================================================
 
 prompt = st.chat_input(
@@ -425,11 +465,12 @@ if pending_question:
     prompt = pending_question
 
 # ============================================================
-# RESPONSE
+# PROCESS QUESTION
 # ============================================================
 
 if prompt:
 
+    # Add user message
     st.session_state.messages.append(
         {
             "role": "user",
@@ -439,17 +480,32 @@ if prompt:
 
     st.session_state.total_questions += 1
 
+    # Show user message
     with st.chat_message("user"):
+
         st.markdown(prompt)
+
+    # ========================================================
+    # AI RESPONSE
+    # ========================================================
 
     with st.chat_message("assistant"):
 
         if client is None:
 
             st.error(
-                "⚠️ Groq API key is missing. "
-                "Add GROQ_API_KEY to "
-                ".streamlit/secrets.toml."
+                "❌ Groq API key is missing.\n\n"
+                "Add this to `.streamlit/secrets.toml`:\n\n"
+                "```toml\n"
+                'GROQ_API_KEY = "your-api-key"\n'
+                "```"
+            )
+
+        elif not st.session_state.get("groq_model"):
+
+            st.error(
+                "❌ No compatible Groq model was found "
+                "for your API key."
             )
 
         else:
@@ -457,7 +513,7 @@ if prompt:
             try:
 
                 response = client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model=st.session_state.groq_model,
                     messages=st.session_state.messages,
                     temperature=0.7,
                     max_tokens=2048
@@ -467,6 +523,7 @@ if prompt:
 
                 st.markdown(answer)
 
+                # Save assistant response
                 st.session_state.messages.append(
                     {
                         "role": "assistant",
@@ -477,5 +534,5 @@ if prompt:
             except Exception as e:
 
                 st.error(
-                    f"❌ Error: {str(e)}"
+                    f"❌ Groq Error:\n\n{str(e)}"
                 )
